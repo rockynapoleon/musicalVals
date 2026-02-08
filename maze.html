@@ -18,8 +18,8 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #ffc0cb;
-            background-image: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 100%);
+            background-color: #260250;
+            background-image: linear-gradient(135deg, #260250 0%, #ffb6c1 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,7 +39,7 @@
         /* The Game Container */
         #game-container {
             position: relative;
-            background: #fff0f5;
+            background: #ee88aa;
             padding: 8px;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -76,32 +76,34 @@
 
         /* Control Buttons - Optimized for touch */
         .btn {
-            width: 55px;
-            height: 55px;
-            background-color: #ffb6c1;
-            border: 2px solid #ff69b4;
+            width: 60px;
+            height: 60px;
+            background-color: #decef0;
+            border: 2px solid #646464;
             border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 0 #ff69b4;
-            transition: transform 0.05s, box-shadow 0.05s;
+            box-shadow: 0 3px 0 #0c0c0c;
             flex-shrink: 0;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            position: relative;
+            padding: 0;
+            font-size: 0;
         }
 
         .btn:active {
             transform: translateY(3px);
-            box-shadow: 0 0 0 #ff69b4;
+            box-shadow: 0 0 0 #0c0c0c;
         }
 
         .btn svg {
             width: 28px;
             height: 28px;
             fill: #fff;
-            stroke: #fff;
+            stroke: #5a0000;
             stroke-width: 2;
             pointer-events: none;
         }
@@ -113,7 +115,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(17, 17, 17, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -129,7 +131,7 @@
         }
 
         .popup-content {
-            background: white;
+            background: rgb(126, 126, 126);
             padding: 30px;
             border-radius: 20px;
             text-align: center;
@@ -151,13 +153,13 @@
         }
 
         .popup-content p {
-            color: #555;
+            color: #dddddd;
             margin: 0 0 20px 0;
             font-size: 1.1rem;
         }
 
         .restart-btn {
-            background: #4dd0e1;
+            background: #da1334;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -165,7 +167,6 @@
             border-radius: 10px;
             cursor: pointer;
             box-shadow: 0 4px 0 #26c6da;
-            transition: transform 0.05s, box-shadow 0.05s;
         }
         
         .restart-btn:active {
@@ -199,14 +200,10 @@
             }
 
             .btn {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
                 border-radius: 10px;
                 box-shadow: 0 2px 0 #ff69b4;
-            }
-
-            .btn:active {
-                transform: translateY(2px);
             }
 
             .btn svg {
@@ -215,7 +212,7 @@
             }
         }
 
-        /* Hearts Animation */
+/* Hearts Animation */
 #hearts {
     position: fixed;
     inset: 0;
@@ -226,7 +223,7 @@
 
 .heart {
     position: absolute;
-    color: rgba(255, 77, 109, 0.6);
+    color: rgb(99, 6, 248);
     font-size: 16px;
     animation: floatUp linear infinite;
 }
@@ -241,10 +238,12 @@
         opacity: 0;
     }
 }
+
     </style>
 </head>
 <body>
-<div id="hearts"></div>
+    <div id="hearts"></div>
+
     <h1>Maze Love Run</h1>
 
     <div id="game-container">
@@ -253,20 +252,20 @@
 
     <div class="controls">
         <div class="row">
-            <div class="btn" id="btn-up">
+            <button class="btn" id="btn-up">
                 <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h16z"/></svg>
-            </div>
+            </button>
         </div>
         <div class="row">
-            <div class="btn" id="btn-left">
+            <button class="btn" id="btn-left">
                 <svg viewBox="0 0 24 24"><path d="M4 12l8-8v16z"/></svg>
-            </div>
-            <div class="btn" id="btn-down">
+            </button>
+            <button class="btn" id="btn-down">
                 <svg viewBox="0 0 24 24"><path d="M12 20l-8-8h16z"/></svg>
-            </div>
-            <div class="btn" id="btn-right">
+            </button>
+            <button class="btn" id="btn-right">
                 <svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16z"/></svg>
-            </div>
+            </button>
         </div>
     </div>
 
@@ -280,13 +279,6 @@
     </div>
 
     <script>
-        // Prevent default touch behaviors
-        document.addEventListener('touchmove', function(e) {
-            if (e.target.tagName !== 'CANVAS') {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
         const canvas = document.getElementById('mazeCanvas');
         const ctx = canvas.getContext('2d', { alpha: false });
         const popup = document.getElementById('popup');
@@ -305,13 +297,8 @@
 
         // Set canvas size
         function resizeCanvas() {
-            const container = document.getElementById('game-container');
-            const maxWidth = Math.min(window.innerWidth * 0.9, cols * tileSize);
-            const maxHeight = Math.min(window.innerHeight * 0.5, rows * tileSize);
-            
             canvas.width = cols * tileSize;
             canvas.height = rows * tileSize;
-            
             draw();
         }
 
@@ -343,7 +330,7 @@
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1],
             [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
             [1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
-            [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
         // Initialize
@@ -368,7 +355,7 @@
                 for (let col = 0; col < cols; col++) {
                     const tile = mazeMap[row][col];
                     if (tile === 1) {
-                        ctx.fillStyle = '#4dd0e1'; 
+                        ctx.fillStyle = '#cc0000';
                         ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
                     } else {
                         ctx.fillStyle = '#fff0f5'; 
@@ -399,6 +386,8 @@
         }
 
         function movePlayer(dx, dy) {
+            if (popup.classList.contains('show')) return;
+            
             const newX = player.x + dx;
             const newY = player.y + dy;
 
@@ -412,6 +401,7 @@
             if (player.x === goal.x && player.y === goal.y) {
                 setTimeout(() => {
                     popup.classList.add('show');
+                    createHeartBurst();
                 }, 100);
             }
         }
@@ -420,31 +410,49 @@
         document.addEventListener('keydown', (e) => {
             if (popup.classList.contains('show')) return;
             switch(e.key) {
-                case 'ArrowUp': movePlayer(0, -1); break;
-                case 'ArrowDown': movePlayer(0, 1); break;
-                case 'ArrowLeft': movePlayer(-1, 0); break;
-                case 'ArrowRight': movePlayer(1, 0); break;
+                case 'ArrowUp': 
+                    e.preventDefault();
+                    movePlayer(0, -1); 
+                    break;
+                case 'ArrowDown': 
+                    e.preventDefault();
+                    movePlayer(0, 1); 
+                    break;
+                case 'ArrowLeft': 
+                    e.preventDefault();
+                    movePlayer(-1, 0); 
+                    break;
+                case 'ArrowRight': 
+                    e.preventDefault();
+                    movePlayer(1, 0); 
+                    break;
             }
         });
 
-        // Touch Controls with improved response
-        document.getElementById('btn-up').addEventListener('click', () => movePlayer(0, -1));
-        document.getElementById('btn-down').addEventListener('click', () => movePlayer(0, 1));
-        document.getElementById('btn-left').addEventListener('click', () => movePlayer(-1, 0));
-        document.getElementById('btn-right').addEventListener('click', () => movePlayer(1, 0));
+        // Button Click Handlers
+        const btnUp = document.getElementById('btn-up');
+        const btnDown = document.getElementById('btn-down');
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
 
-        // Prevent scrolling on buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('touchstart', (e) => e.preventDefault());
-        });
+        btnUp.addEventListener('click', () => movePlayer(0, -1));
+        btnDown.addEventListener('click', () => movePlayer(0, 1));
+        btnLeft.addEventListener('click', () => movePlayer(-1, 0));
+        btnRight.addEventListener('click', () => movePlayer(1, 0));
+
+        // Touch support for better mobile response
+        btnUp.addEventListener('touchend', (e) => { e.preventDefault(); movePlayer(0, -1); });
+        btnDown.addEventListener('touchend', (e) => { e.preventDefault(); movePlayer(0, 1); });
+        btnLeft.addEventListener('touchend', (e) => { e.preventDefault(); movePlayer(-1, 0); });
+        btnRight.addEventListener('touchend', (e) => { e.preventDefault(); movePlayer(1, 0); });
 
         // Handle orientation change
         window.addEventListener('orientationchange', () => {
             setTimeout(resizeCanvas, 100);
         });
-
-
-        // Hearts Animation Logic
+/* =========================
+   HEARTS BACKGROUND 
+========================= */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -461,7 +469,6 @@ function createHeart() {
 }
 
 setInterval(createHeart, 400);
-
     </script>
 </body>
 </html>
