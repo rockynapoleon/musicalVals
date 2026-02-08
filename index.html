@@ -223,76 +223,45 @@
 
 
 <script>
-    const noBtn = document.getElementById("noBtn");
+/* =========================
+   NO BUTTON (RUN AWAY 😅)
+========================= */
+const noBtn = document.getElementById("noBtn");
 
-    function moveButton() {
-        const padding = 20;
-        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+function moveButton() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-        noBtn.style.position = "fixed";
-        noBtn.style.left = Math.max(padding, x) + "px";
-        noBtn.style.top = Math.max(padding, y) + "px";
-    }
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.max(padding, x) + "px";
+    noBtn.style.top = Math.max(padding, y) + "px";
+}
 
-    noBtn.addEventListener("click", moveButton);
-    noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("click", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
 
-  
-   // Popup Logic
-   
-    const popupOverlay = document.getElementById("popupOverlay");
-    const popupMessage = document.getElementById("popupMessage");
-    const okBtn = document.getElementById("okBtn");
-    const music = document.getElementById("bgMusic");
 
-    const messages = [
-        "Just a little reminder 😌❤️ You mean a lot to me, Sandra.",
-        "Before anything else… You make my heart smile every day 🥹✨",
-        "Hey beautiful 💕 I’m really glad it’s you.",
-        "Sandra 😌❤️ You make life feel softer and happier.",
-        "Just saying this quickly… You’re special to me 💖"
-    ];
+/* =========================
+   POPUP + TYPING EFFECT
+========================= */
+const popupOverlay = document.getElementById("popupOverlay");
+const popupMessage = document.getElementById("popupMessage");
+const okBtn = document.getElementById("okBtn");
+const music = document.getElementById("bgMusic");
 
-    function typeMessage(element, message, speed = 40) {
-        element.innerHTML = "";
-        let index = 0;
+const messages = [
+    "Just a little reminder 😌❤️ You mean a lot to me, Sandra.",
+    "Before anything else… You make my heart smile every day 🥹✨",
+    "Hey beautiful 💕 I’m really glad it’s you.",
+    "Sandra 😌❤️ You make life feel softer and happier.",
+    "Just saying this quickly… You’re special to me 💖"
+];
 
-        const typing = setInterval(() => {
-            element.innerHTML += message.charAt(index);
-            index++;
-
-            if (index >= message.length) {
-                clearInterval(typing);
-            }
-        }, speed);
-    }
-
-    function showPopup() {
-        const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-        popupOverlay.style.display = "flex";
-        typeMessage(popupMessage, randomMsg);
-    }
-
-    window.addEventListener("load", showPopup);
-
-    okBtn.addEventListener("click", () => {
-        music.volume = 0.25;
-        music.play();
-
-        popupOverlay.classList.add("fadeOut");
-
-        setTimeout(() => {
-            popupOverlay.style.display = "none";
-            popupOverlay.classList.remove("fadeOut");
-        }, 600);
-    });
-
-    //typing effect for popup message
-    function typeMessage(element, message, speed = 40) {
+function typeMessage(element, message, speed = 40) {
     element.innerHTML = "";
     let index = 0;
 
@@ -306,28 +275,36 @@
     }, speed);
 }
 
+function showPopup() {
+    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+    popupOverlay.style.display = "flex";
+    typeMessage(popupMessage, randomMsg);
+}
 
-    window.addEventListener("load", showPopupOnce);
+window.addEventListener("load", showPopup);
 
-    okBtn.addEventListener("click", () => {
-        // Start music (allowed because user interacted)
-        music.volume = 0.25;
-        music.play();
+okBtn.addEventListener("click", () => {
+    // Start music after user interaction (browser-safe)
+    music.volume = 0.25;
+    music.play();
 
-        // Fade out popup
-        popupOverlay.classList.add("fadeOut");
+    // Fade out popup
+    popupOverlay.classList.add("fadeOut");
 
-        // Redirect after animation
-        setTimeout(() => {
-            window.location.href = "index.html";
-        }, 600);
-    });
+    setTimeout(() => {
+        popupOverlay.style.display = "none";
+        popupOverlay.classList.remove("fadeOut");
+    }, 600);
+});
 
-// Hearts Animation Logic
+
+/* =========================
+   HEARTS BACKGROUND 💕
+========================= */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
-    heart.innerHTML = "❤️";
+    heart.innerHTML = "💝";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = 12 + Math.random() * 20 + "px";
     heart.style.animationDuration = 4 + Math.random() * 4 + "s";
@@ -340,9 +317,8 @@ function createHeart() {
 }
 
 setInterval(createHeart, 400);
-
-
 </script>
+
 
 </body>
 </html>
